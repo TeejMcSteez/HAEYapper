@@ -1,0 +1,22 @@
+{
+  "name": "logscraper",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Simple scraper to scrape home assistant log info and store them in a postgres database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "resetdb": "node lib/reset.js && exit 1",
+    "initdb": "node lib/init.js && exit 1",
+    "scrape": "node lib/scrape.js && exit 1",
+    "display": "node lib/display.js && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "packageManager": "pnpm@10.17.1",
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "pg": "^8.16.3"
+  }
+}
