@@ -47,13 +47,8 @@ Just start the server, and it will handle how often you want to scrape, retentio
 
 ## Current TODO
 
-1. Create database action interface to make calling from within a main program easier ✅
-    - Instead of having each action for each database have a database interface which will implement each databases respective commands
-    - This will make it so I can call a function once and pass the environment variables and it will handle the database action.
-2. Update database schema, make each log column unqiue and on constraint do nothing, this will remove the need to parse pass logs and filter them on server. With this it will be done on database.
-    - Create hash for each log and compare hashes? more effecient, less overhead, faster.
-3. Normalize log parsing/structured output
+1. Normalize log parsing/structured output
     - To search from component/level/Warning|Error/etc.
-4. CLI Improvement
+2. CLI Improvement
     - Make clear and concise console commands that preform most used action
     - Also allow flags for output and input of different files when needed (output file, .env file location, etc.)
