@@ -1,15 +1,14 @@
-import DropPostgresTable from "./lib/postgres/postgresReset.js";
-import ScrapePostgres from "./lib/postgres/postgresScrape.js";
 import PostgresInit from "./lib/postgres/postgresInit.js";
-import PostgresOutputLogs from "./lib/postgres/postgresDisplay.js";
 import PostgresPurge from "./lib/postgres/postgresPurge.js";
 
 import readline from "node:readline";
 import { stdin, stdout } from "node:process";
 
-import sqlliteScrape from "./lib/sqllite/sqlliteScrape.js";
-import sqlliteOutputLogs from "./lib/sqllite/sqlliteDisplay.js";
 import sqllitePurge from "./lib/sqllite/sqllitePurge.js";
+
+import Display from "./lib/database/Display.js";
+import Scrape from "./lib/database/Scrape.js";
+import DropTable from "./lib/database/DropTable.js";
 
 const rl = readline.createInterface({
     input: stdin,
@@ -33,24 +32,12 @@ async function main() {
 
     switch (choice.trim()) {
         case "1":
-            if (process.env.DB_TYPE === "postgres") {
-                await ScrapePostgres();
-            } else if (process.env.DB_TYPE === "sqllite") {
-                await sqlliteScrape();
-            } else {
-                throw new Error("Invalid database environment");
-            }
+            await Scrape();
             break;
         case "2":
 
             
-            if (process.env.DB_TYPE === "postgres") {
-                await DropPostgresTable();
-            } else if (process.env.DB_TYPE === "sqllite") {
-                sqlliteOutputLogs();
-            } else {
-                throw new Error("Invalid database environment");
-            }
+            await DropTable();
 
             break;
         case "3":
@@ -67,14 +54,7 @@ async function main() {
             break;
         case "4":
 
-            
-            if (process.env.DB_TYPE === "postgres") {
-                await PostgresOutputLogs();
-            } else if (process.env.DB_TYPE === "sqllite") {
-                sqlliteOutputLogs();
-            } else {
-                throw new Error("Invalid database environment");
-            }
+            await Display();
 
             break;
         case "5":
