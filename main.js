@@ -28,22 +28,15 @@ async function main() {
     );
 
     switch (choice.trim()) {
-        // Scrape logs
         case "1":
             await Scrape();
             break;
-        // Reset table
         case "2":
-            
             await DropTable();
-
             break;
         case "3":
-
             await Display();
-
             break;
-        // Deletes log within a given timespan and interval
         case "4":
             const timespan = await ask("Choose to delete 'day'(s) or 'hour'(s)\n> ");
             switch (timespan) {
