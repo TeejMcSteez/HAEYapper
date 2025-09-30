@@ -1,21 +1,15 @@
-/**
- * Author: Tommy Hall
- * Link: https://github.com/teejMcSteez/HAEYapper
- */
-// Postgres
-import DropPostgresTable from "./lib/postgres/postgresReset.js";
-import ScrapePostgres from "./lib/postgres/postgresScrape.js";
-import PostgresOutputLogs from "./lib/postgres/postgresDisplay.js";
+import PostgresInit from "./lib/postgres/postgresInit.js";
 import PostgresPurge from "./lib/postgres/postgresPurge.js";
 // User input on console
 import readline from "node:readline";
 import { stdin, stdout } from "node:process";
-// SQLLite
-import sqlliteScrape from "./lib/sqllite/sqlliteScrape.js";
-import sqlliteOutputLogs from "./lib/sqllite/sqlliteDisplay.js";
+
 import sqllitePurge from "./lib/sqllite/sqllitePurge.js";
-import DropSqlliteTable from "./lib/sqllite/sqlliteReset.js";
-// User input interface
+
+import Display from "./lib/database/Display.js";
+import Scrape from "./lib/database/Scrape.js";
+import DropTable from "./lib/database/DropTable.js";
+
 const rl = readline.createInterface({
     input: stdin,
     output: stdout
@@ -39,34 +33,30 @@ async function main() {
     switch (choice.trim()) {
         // Scrape logs
         case "1":
-            if (process.env.DB_TYPE === "postgres") {
-                await ScrapePostgres();
-            } else if (process.env.DB_TYPE === "sqllite") {
-                await sqlliteScrape();
-            } else {
-                throw new Error("Invalid database environment");
-            }
+            await Scrape();
             break;
         // Reset table
         case "2":
+
+            
+            await DropTable();
+
+            break;
+        case "3":
+
+            
             if (process.env.DB_TYPE === "postgres") {
-                await DropPostgresTable();
+                await PostgresInit();
             } else if (process.env.DB_TYPE === "sqllite") {
-                DropSqlliteTable();
+                console.log("SQLLite client auto inits db");
             } else {
-                throw new Error("Invalid database environment");
+                throw new Error("Invalid database environment"); 
             }
 
             break;
-        // Output logs to console
-        case "3": 
-            if (process.env.DB_TYPE === "postgres") {
-                await PostgresOutputLogs();
-            } else if (process.env.DB_TYPE === "sqllite") {
-                sqlliteOutputLogs();
-            } else {
-                throw new Error("Invalid database environment");
-            }
+        case "4":
+
+            await Display();
 
             break;
         // Deletes log within a given timespan and interval
