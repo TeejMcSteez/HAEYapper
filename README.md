@@ -20,11 +20,11 @@ For the main program I want to . . .
 
 #### Add Ons
 
-- Features to remove old data that I don't need (DELETE ... WHERE datetime < proposedDatetime)
+- Features to remove old data that I don't need (DELETE ... WHERE datetime < proposedDatetime) ✅ -> `<db_type>`Purge.js
 - Ability to set a retention length in .env or another method so that it will automatically clean up your database. Ensuring the disk's don't balloon.
 - Ability to forward error logs via other methods including . . . 
     - SMB (network shares?)
-    - SQLLite (local)
+    - SQLLite (local) ✅
     - MySQL (database)
     - JSON (local)
     - MongoDB (database)
@@ -36,5 +36,11 @@ Just start the server, and it will handle how often you want to scrape, retentio
 
 ## Current Dependencies
 
+### For Postgres Users
+
 - [node-postgres](https://www.npmjs.com/package/pg)
+- [dotenv](https://www.npmjs.com/package/dotenv)
+
+### For Sqllite Users
+
 - [dotenv](https://www.npmjs.com/package/dotenv)
