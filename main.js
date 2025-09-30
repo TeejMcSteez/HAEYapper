@@ -1,14 +1,11 @@
-import PostgresInit from "./lib/postgres/postgresInit.js";
-import PostgresPurge from "./lib/postgres/postgresPurge.js";
 // User input on console
 import readline from "node:readline";
 import { stdin, stdout } from "node:process";
-
-import sqllitePurge from "./lib/sqllite/sqllitePurge.js";
-
+// Database interfaces
 import Display from "./lib/database/Display.js";
 import Scrape from "./lib/database/Scrape.js";
 import DropTable from "./lib/database/DropTable.js";
+import Purge from "./lib/database/Purge.js";
 
 const rl = readline.createInterface({
     input: stdin,
@@ -37,24 +34,11 @@ async function main() {
             break;
         // Reset table
         case "2":
-
             
             await DropTable();
 
             break;
         case "3":
-
-            
-            if (process.env.DB_TYPE === "postgres") {
-                await PostgresInit();
-            } else if (process.env.DB_TYPE === "sqllite") {
-                console.log("SQLLite client auto inits db");
-            } else {
-                throw new Error("Invalid database environment"); 
-            }
-
-            break;
-        case "4":
 
             await Display();
 
@@ -66,25 +50,13 @@ async function main() {
                 case "day":
                     const days = await ask("Choose number of days, logs older than this will be deleted\n> ");
          
-                    if (process.env.DB_TYPE === "postgres") {
-                        await PostgresPurge(timespan, days);
-                    } else if (process.env.DB_TYPE === "sqllite") {
-                        sqllitePurge(days, timespan);
-                    } else {
-                        throw new Error("Invalid database environment");
-                    }
+                    await Purge(timespan, days)
 
                     break;
                 case "hour":
                     const hours = await ask("Choose number of hours, logs older than this will be deleted\n> ");
          
-                    if (process.env.DB_TYPE === "postgres") {
-                        await PostgresPurge(timespan, hours);
-                    } else if (process.env.DB_TYPE === "sqllite") {
-                        sqllitePurge(hours, timespan);
-                    } else {
-                        throw new Error("Invalid database environment");
-                    }
+                    await Purge(timespan, hours);
 
                     break;
                 default:
