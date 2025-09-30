@@ -1,16 +1,21 @@
+/**
+ * Author: Tommy Hall
+ * Link: https://github.com/teejMcSteez/HAEYapper
+ */
+// Postgres
 import DropPostgresTable from "./lib/postgres/postgresReset.js";
 import ScrapePostgres from "./lib/postgres/postgresScrape.js";
 import PostgresOutputLogs from "./lib/postgres/postgresDisplay.js";
 import PostgresPurge from "./lib/postgres/postgresPurge.js";
-
+// User input on console
 import readline from "node:readline";
 import { stdin, stdout } from "node:process";
-
+// SQLLite
 import sqlliteScrape from "./lib/sqllite/sqlliteScrape.js";
 import sqlliteOutputLogs from "./lib/sqllite/sqlliteDisplay.js";
 import sqllitePurge from "./lib/sqllite/sqllitePurge.js";
 import DropSqlliteTable from "./lib/sqllite/sqlliteReset.js";
-
+// User input interface
 const rl = readline.createInterface({
     input: stdin,
     output: stdout
@@ -32,6 +37,7 @@ async function main() {
     );
 
     switch (choice.trim()) {
+        // Scrape logs
         case "1":
             if (process.env.DB_TYPE === "postgres") {
                 await ScrapePostgres();
@@ -41,6 +47,7 @@ async function main() {
                 throw new Error("Invalid database environment");
             }
             break;
+        // Reset table
         case "2":
             if (process.env.DB_TYPE === "postgres") {
                 await DropPostgresTable();
@@ -51,6 +58,7 @@ async function main() {
             }
 
             break;
+        // Output logs to console
         case "3": 
             if (process.env.DB_TYPE === "postgres") {
                 await PostgresOutputLogs();
@@ -61,6 +69,7 @@ async function main() {
             }
 
             break;
+        // Deletes log within a given timespan and interval
         case "4":
             const timespan = await ask("Choose to delete 'day'(s) or 'hour'(s)\n> ");
             switch (timespan) {
@@ -96,6 +105,7 @@ async function main() {
             console.log("Bad choice");
             break;
     }
+    // Close user input
     rl.close();
     process.exit(0);
 }
