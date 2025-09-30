@@ -28,7 +28,7 @@ function ask(question) {
  */
 async function main() {
     const choice = await ask(
-        "1) Scrape New Logs\n2) Reset Table\n3) Init after reset or new (postgres only)\n4) Output Current Logs\n5) Purge Logs from Database\n> "
+        "1) Scrape New Logs\n2) Reset Table\n3) Output Current Logs\n4) Purge Logs from Database\n> "
     );
 
     switch (choice.trim()) {
@@ -42,32 +42,17 @@ async function main() {
             }
             break;
         case "2":
-
-            
             if (process.env.DB_TYPE === "postgres") {
                 await DropPostgresTable();
             } else if (process.env.DB_TYPE === "sqllite") {
-                sqlliteOutputLogs();
+                // Stupid -> implement for sqllite
+                
             } else {
                 throw new Error("Invalid database environment");
             }
 
             break;
-        case "3":
-
-            
-            if (process.env.DB_TYPE === "postgres") {
-                await PostgresInit();
-            } else if (process.env.DB_TYPE === "sqllite") {
-                console.log("SQLLite client auto inits db");
-            } else {
-                throw new Error("Invalid database environment"); 
-            }
-
-            break;
-        case "4":
-
-            
+        case "3": 
             if (process.env.DB_TYPE === "postgres") {
                 await PostgresOutputLogs();
             } else if (process.env.DB_TYPE === "sqllite") {
@@ -77,13 +62,12 @@ async function main() {
             }
 
             break;
-        case "5":
+        case "4":
             const timespan = await ask("Choose to delete 'day'(s) or 'hour'(s)\n> ");
             switch (timespan) {
                 case "day":
                     const days = await ask("Choose number of days, logs older than this will be deleted\n> ");
-
-                    
+         
                     if (process.env.DB_TYPE === "postgres") {
                         await PostgresPurge(timespan, days);
                     } else if (process.env.DB_TYPE === "sqllite") {
@@ -95,8 +79,7 @@ async function main() {
                     break;
                 case "hour":
                     const hours = await ask("Choose number of hours, logs older than this will be deleted\n> ");
-
-                    
+         
                     if (process.env.DB_TYPE === "postgres") {
                         await PostgresPurge(timespan, hours);
                     } else if (process.env.DB_TYPE === "sqllite") {
