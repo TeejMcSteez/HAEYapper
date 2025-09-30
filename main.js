@@ -1,10 +1,11 @@
-import DropTable from "./lib/reset.js";
-import Scrape from "./lib/scrape.js";
-import Init from "./lib/init.js";
-import OutputLogs from "./lib/display.js";
-import Purge from "./lib/purge.js";
+import DropPostgresTable from "./lib/postgres/postgresReset.js";
+import ScrapePostgres from "./lib/postgres/postgresScrape.js";
+import PostgresInit from "./lib/postgres/postgresInit.js";
+import PostgresOutputLogs from "./lib/postgres/postgresDisplay.js";
+import PostgresPurge from "./lib/postgres/postgresPurge.js";
 import readline from "node:readline";
 import { stdin, stdout } from "node:process";
+import sqlliteScrape from "./lib/sqllite/sqlliteScrape.js";
 
 const rl = readline.createInterface({
     input: stdin,
@@ -23,32 +24,83 @@ function ask(question) {
  */
 async function main() {
     const choice = await ask(
-        "1) Scrape New Logs\n2) Reset Table\n3) Init after reset or new\n4) Output Current Logs\n5) Purge Logs from Database\n> "
+        "1) Scrape New Logs\n2) Reset Table\n3) Init after reset or new (postgres only)\n4) Output Current Logs\n5) Purge Logs from Database\n> "
     );
 
     switch (choice.trim()) {
         case "1":
-            await Scrape();
+            if (process.env.DB_TYPE === "postgres") {
+                await ScrapePostgres();
+            } else if (process.env.DB_TYPE === "sqllite") {
+                await sqlliteScrape();
+            } else {
+                throw new Error("Invalid database environment");
+            }
             break;
         case "2":
-            await DropTable();
+
+            // Add specific env logic
+            if (process.env.DB_TYPE === "postgres") {
+                await DropPostgresTable();
+            } else if (process.env.DB_TYPE === "sqllite") {
+                // TODO: implement for sqllite
+            } else {
+                throw new Error("Invalid database environment");
+            }
+
             break;
         case "3":
-            await Init();
+
+            // Add specific env logic
+            if (process.env.DB_TYPE === "postgres") {
+                await PostgresInit();
+            } else if (process.env.DB_TYPE === "sqllite") {
+                console.log("SQLLite client auto inits db");
+            } else {
+                throw new Error("Invalid database environment"); 
+            }
+
             break;
         case "4":
-            await OutputLogs();
+
+            // Add specific env logic
+            if (process.env.DB_TYPE === "postgres") {
+                await PostgresOutputLogs();
+            } else if (process.env.DB_TYPE === "sqllite") {
+                // TODO: implement for sqllite
+            } else {
+                throw new Error("Invalid database environment");
+            }
+
             break;
         case "5":
             const timespan = await ask("Choose to delete 'day'(s) or 'hour'(s)\n> ");
             switch (timespan) {
                 case "day":
                     const days = await ask("Choose number of days, logs older than this will be deleted\n> ");
-                    await Purge(timespan, days)
+
+                    // Add specific env logic
+                    if (process.env.DB_TYPE === "postgres") {
+                        await PostgresPurge(timespan, days);
+                    } else if (process.env.DB_TYPE === "sqllite") {
+                        // TODO: implement for sqllite
+                    } else {
+                        throw new Error("Invalid database environment");
+                    }
+
                     break;
                 case "hour":
                     const hours = await ask("Choose number of hours, logs older than this will be deleted\n> ");
-                    await Purge(timespan, hours);
+
+                    // Add specific env logic
+                    if (process.env.DB_TYPE === "postgres") {
+                        await PostgresPurge(timespan, hours);
+                    } else if (process.env.DB_TYPE === "sqllite") {
+                        // TODO: implement for sqllite
+                    } else {
+                        throw new Error("Invalid database environment");
+                    }
+
                     break;
                 default:
                     throw new Error("Invalid timespan choice");
