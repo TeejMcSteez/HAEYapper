@@ -1,6 +1,5 @@
 import DropPostgresTable from "./lib/postgres/postgresReset.js";
 import ScrapePostgres from "./lib/postgres/postgresScrape.js";
-import PostgresInit from "./lib/postgres/postgresInit.js";
 import PostgresOutputLogs from "./lib/postgres/postgresDisplay.js";
 import PostgresPurge from "./lib/postgres/postgresPurge.js";
 
@@ -10,6 +9,7 @@ import { stdin, stdout } from "node:process";
 import sqlliteScrape from "./lib/sqllite/sqlliteScrape.js";
 import sqlliteOutputLogs from "./lib/sqllite/sqlliteDisplay.js";
 import sqllitePurge from "./lib/sqllite/sqllitePurge.js";
+import DropSqlliteTable from "./lib/sqllite/sqlliteReset.js";
 
 const rl = readline.createInterface({
     input: stdin,
@@ -45,8 +45,7 @@ async function main() {
             if (process.env.DB_TYPE === "postgres") {
                 await DropPostgresTable();
             } else if (process.env.DB_TYPE === "sqllite") {
-                // Stupid -> implement for sqllite
-                
+                DropSqlliteTable();
             } else {
                 throw new Error("Invalid database environment");
             }
