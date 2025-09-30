@@ -47,7 +47,7 @@ Just start the server, and it will handle how often you want to scrape, retentio
 
 ## Current TODO
 
-1. Create database action interface to make calling from within a main program easier
+1. Create database action interface to make calling from within a main program easier ✅
     - Instead of having each action for each database have a database interface which will implement each databases respective commands
     - This will make it so I can call a function once and pass the environment variables and it will handle the database action.
 2. Update database schema, make each log column unqiue and on constraint do nothing, this will remove the need to parse pass logs and filter them on server. With this it will be done on database.
