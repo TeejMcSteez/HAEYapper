@@ -3,9 +3,13 @@ import ScrapePostgres from "./lib/postgres/postgresScrape.js";
 import PostgresInit from "./lib/postgres/postgresInit.js";
 import PostgresOutputLogs from "./lib/postgres/postgresDisplay.js";
 import PostgresPurge from "./lib/postgres/postgresPurge.js";
+
 import readline from "node:readline";
 import { stdin, stdout } from "node:process";
+
 import sqlliteScrape from "./lib/sqllite/sqlliteScrape.js";
+import sqlliteOutputLogs from "./lib/sqllite/sqlliteDisplay.js";
+import sqllitePurge from "./lib/sqllite/sqllitePurge.js";
 
 const rl = readline.createInterface({
     input: stdin,
@@ -39,11 +43,11 @@ async function main() {
             break;
         case "2":
 
-            // Add specific env logic
+            
             if (process.env.DB_TYPE === "postgres") {
                 await DropPostgresTable();
             } else if (process.env.DB_TYPE === "sqllite") {
-                // TODO: implement for sqllite
+                sqlliteOutputLogs();
             } else {
                 throw new Error("Invalid database environment");
             }
@@ -51,7 +55,7 @@ async function main() {
             break;
         case "3":
 
-            // Add specific env logic
+            
             if (process.env.DB_TYPE === "postgres") {
                 await PostgresInit();
             } else if (process.env.DB_TYPE === "sqllite") {
@@ -63,11 +67,11 @@ async function main() {
             break;
         case "4":
 
-            // Add specific env logic
+            
             if (process.env.DB_TYPE === "postgres") {
                 await PostgresOutputLogs();
             } else if (process.env.DB_TYPE === "sqllite") {
-                // TODO: implement for sqllite
+                sqlliteOutputLogs();
             } else {
                 throw new Error("Invalid database environment");
             }
@@ -79,11 +83,11 @@ async function main() {
                 case "day":
                     const days = await ask("Choose number of days, logs older than this will be deleted\n> ");
 
-                    // Add specific env logic
+                    
                     if (process.env.DB_TYPE === "postgres") {
                         await PostgresPurge(timespan, days);
                     } else if (process.env.DB_TYPE === "sqllite") {
-                        // TODO: implement for sqllite
+                        sqllitePurge(days, timespan);
                     } else {
                         throw new Error("Invalid database environment");
                     }
@@ -92,11 +96,11 @@ async function main() {
                 case "hour":
                     const hours = await ask("Choose number of hours, logs older than this will be deleted\n> ");
 
-                    // Add specific env logic
+                    
                     if (process.env.DB_TYPE === "postgres") {
                         await PostgresPurge(timespan, hours);
                     } else if (process.env.DB_TYPE === "sqllite") {
-                        // TODO: implement for sqllite
+                        sqllitePurge(hours, timespan);
                     } else {
                         throw new Error("Invalid database environment");
                     }
