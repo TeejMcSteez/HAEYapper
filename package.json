@@ -1,11 +1,11 @@
 {
   "name": "logscraper",
   "type": "module",
-  "version": "1.2",
-  "description": "Simple scraper to scrape home assistant log info and store them in a postgres database",
+  "version": "1.3",
+  "description": "Simple scraper to scrape home assistant log info and store them in a postgres or sqllite database",
   "main": "index.js",
   "scripts": {
-    "test": "node main.js"
+    "cli": "node cli.js"
   },
   "keywords": [],
   "author": "",
