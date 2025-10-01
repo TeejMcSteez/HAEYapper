@@ -4,6 +4,9 @@
   "version": "1.3",
   "description": "Simple scraper to scrape home assistant log info and store them in a postgres or sqllite database",
   "main": "index.js",
+  "engines" : {
+    "node": ">=22.5.0"
+  },
   "scripts": {
     "cli": "node cli.js"
   },
