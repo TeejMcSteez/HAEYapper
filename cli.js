@@ -35,7 +35,8 @@ async function main() {
             await DropTable();
             break;
         case "3":
-            await Display();
+            const ans = await ask("Output logs to file? (Y/N)\n> ");
+            await Display(ans);
             break;
         case "4":
             const timespan = await ask("Choose to delete 'day'(s) or 'hour'(s)\n> ");
