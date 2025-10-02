@@ -6,6 +6,7 @@ import Display from "./lib/database/Display.js";
 import Scrape from "./lib/database/Scrape.js";
 import DropTable from "./lib/database/DropTable.js";
 import Purge from "./lib/database/Purge.js";
+import { Cron, SetupScrapeSchedule, isSetup } from "./lib/cron/Scraper.js";
 
 const rl = readline.createInterface({
     input: stdin,
@@ -24,7 +25,7 @@ function ask(question) {
  */
 async function main() {
     const choice = await ask(
-        "1) Scrape New Logs\n2) Reset Table\n3) Output Current Logs\n4) Purge Logs from Database\nEnter anything else to exit\n> "
+        "1) Scrape New Logs\n2) Reset Table\n3) Output Current Logs\n4) Purge Logs from Database\n5) Setup Scrape Schedule\nEnter anything else to exit\n> "
     );
 
     switch (choice.trim()) {
@@ -56,6 +57,39 @@ async function main() {
                 default:
                     throw new Error("Invalid timespan choice");
             }
+            break;
+        case "5":
+            console.log("Welcome to setting up scheduling a scrape cron job\n");
+            if (isSetup()) {
+                const a = await ask("Would you like to use the saved schedule or over-write it? (Y/N)\n> ");
+                if (a.toLowerCase() === "y") {
+                    await Cron();
+                } else if (a.toLowerCase() === "n") {
+                    const second = await ask("Second? (Use * for wildcard)\n> ");
+                    const minute = await ask("Minute? (Use * for wildcard)\n> ");
+                    const hour = await ask("Hour? (Use * for wildcard)\n> ");
+                    const dom = await ask("Day of Month? (Use * for wildcard)\n> ");
+                    const mon = await ask("Month? (Use * for wildcard)\n> ");
+                    const dow = await ask("Day of Week? (Use * for wildcard)\n> ");
+
+                    await SetupScrapeSchedule({second, minute, hour, dom, mon, dow});
+                } else {
+                    throw new Error("Invlaid input");
+                }
+
+            } else {
+                console.log("No pre-saved crontab setting one up now . . .");
+                const second = await ask("Second? (Use * for wildcard)\n> ");
+                const minute = await ask("Minute? (Use * for wildcard)\n> ");
+                const hour = await ask("Hour? (Use * for wildcard)\n> ");
+                const dom = await ask("Day of Month? (Use * for wildcard)\n> ");
+                const mon = await ask("Month? (Use * for wildcard)\n> ");
+                const dow = await ask("Day of Week? (Use * for wildcard)\n> ");
+
+                await SetupScrapeSchedule({second, minute, hour, dom, mon, dow});
+
+            }
+            console.log("Finished setting up crontab");
             break;
         default:
             console.log("Bad choice");
