@@ -40,8 +40,26 @@ Just start the server, and it will handle how often you want to scrape, retentio
 
 ## Current TODO
 
-1. Normalize log parsing/structured output
-    - To search from component/level/Warning|Error/etc.
-2. CLI Improvement
-    - Make clear and concise console commands that preform most used action
-    - Also allow flags for output and input of different files when needed (output file, .env file location, etc.)
+Re-write database functionality to be more centralized. Only import what is need using 
+
+```javascript
+const map = {
+    postgres: () => import("../clients/pg.js"),
+    sqllite: () => import("./clients/sqlite.js")
+}
+
+function createDb() {
+    const key = process.env.DB_CLIENT ?? "sqlite";
+    const loader = map[key];
+    if (!loader) {
+        throw new Error("Unsupported DB_TYPE");
+    }
+    let mod;
+    try {
+        mod = await loader();
+    } catch (e) {
+        throw new Error("Failed to load adpater, have you installed the correct dependency?");
+    }
+    return mod.<createClient>();
+}
+```

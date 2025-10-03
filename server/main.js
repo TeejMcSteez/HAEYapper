@@ -17,7 +17,7 @@ server.get("/logs/get", async (ctx) => {
 
     return ctx.json(logs);
 });
-
+// TODO: Add request parsing for security, ensuring that it matches a regex
 server.get("/logs/purge/:timespan/:interval", async (ctx) => {
     const { timespan, interval } = ctx.req.param();
 
@@ -25,7 +25,7 @@ server.get("/logs/purge/:timespan/:interval", async (ctx) => {
 
     return ctx.json({ "Timespan Removed": `${interval} ${timespan + "s"}` });
 });
-
+// TODO: Add request parsing for security, ensuring that it matches a regex
 server.get("/schedule/:second/:minute/:hour/:dom/:mon/:dow", async (ctx) =>  {
     const { second, minute, hour, dom, mon, dow } = ctx.req.param();
 
