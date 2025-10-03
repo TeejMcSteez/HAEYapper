@@ -37,7 +37,8 @@ async function main() {
             break;
         case "3":
             const ans = await ask("Output logs to file? (Y/N)\n> ");
-            await Display(ans);
+            const filename = await ask("Name of file (Leave blank for log)\n> ");
+            await Display(ans, filename);
             break;
         case "4":
             const timespan = await ask("Choose to delete 'day'(s) or 'hour'(s)\n> ");
