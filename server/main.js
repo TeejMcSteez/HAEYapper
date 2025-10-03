@@ -2,6 +2,8 @@ import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 
 import Select from "../lib/database/Select.js";
+import Purge from "../lib/database/Purge.js";
+
 import { Cron, isSetup, SetupScrapeSchedule, DestroyCron } from "../lib/cron/Scraper.js";
 
 
@@ -14,6 +16,14 @@ server.get("/logs/get", async (ctx) => {
     const logs = await Select();
 
     return ctx.json(logs);
+});
+
+server.get("/logs/purge/:timespan/:interval", async (ctx) => {
+    const { timespan, interval } = ctx.req.param();
+
+    await Purge(timespan, interval);
+
+    return ctx.json({ "Timespan Removed": `${interval} ${timespan + "s"}` });
 });
 
 server.get("/schedule/:second/:minute/:hour/:dom/:mon/:dow", async (ctx) =>  {
