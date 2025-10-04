@@ -1,5 +1,5 @@
 {
-  "name": "logscraper",
+  "name": "haeyapper",
   "type": "module",
   "version": "1.9",
   "description": "Simple scraper to scrape home assistant log info and store them in a postgres or sqllite database",
