@@ -3,6 +3,7 @@ import { serve } from "@hono/node-server";
 
 import SelectAdapter from "../lib/database/SelectAdapter.js";
 import PurgeAdapter from "../lib/database/PurgeAdapter.js";
+import ScrapeAdapter from "../lib/database/ScrapeAdapter.js";
 
 import { Cron, isSetup, SetupScrapeSchedule, DestroyCron } from "../lib/cron/Scraper.js";
 
@@ -13,35 +14,66 @@ const server = new Hono({
 
 
 server.get("/logs/get", async (ctx) => {
-    const logs = await SelectAdapter();
-
-    return ctx.json(logs);
+    try {
+        const logs = await SelectAdapter();
+        return ctx.json(logs);
+    } catch (e) {
+        console.log("error getting logs: " + e);
+        return ctx.json({ "error": e });
+    }
 });
 // TODO: Add request parsing for security, ensuring that it matches a regex
 server.get("/logs/Purge/:timespan/:interval", async (ctx) => {
-    const { timespan, interval } = ctx.req.param();
+    try {
+        const { timespan, interval } = ctx.req.param();
 
-    await PurgeAdapter(timespan, interval);
+        await PurgeAdapter(timespan, interval);
 
-    return ctx.json({ "Timespan Removed": `${interval} ${timespan + "s"}` });
+        return ctx.json({ "Timespan Removed": `${interval} ${timespan + "s"}` });
+    } catch (e) {
+        console.log("error purging logs " + e);
+        return ctx.json({ "error": e });
+    }
+});
+
+server.get("/logs/scrape", async (ctx) => {
+    console.log("Scrape job started\n");
+    try {
+        await ScrapeAdapter();
+        console.log("Scrape job complete\n")
+        return ctx.json({ "Scrape Job": "Completed" });
+    } catch (e) {
+        console.log("Scrape job failed with error " + e);
+        return ctx.json({ "error": e });
+    }
 });
 // TODO: Add request parsing for security, ensuring that it matches a regex
 server.get("/schedule/:second/:minute/:hour/:dom/:mon/:dow", async (ctx) =>  {
-    const { second, minute, hour, dom, mon, dow } = ctx.req.param();
+    try {
+        const { second, minute, hour, dom, mon, dow } = ctx.req.param();
 
-    const res = await SetupScrapeSchedule({ second, minute, hour, dom, mon, dow });
+        const res = await SetupScrapeSchedule({ second, minute, hour, dom, mon, dow });
 
-    return ctx.json({ "Success": res });
+        return ctx.json({ "Success": res });
+    } catch (e) {
+        console.log("error scheduling scrape job: " + e);
+        return ctx.json({ "error": e }); 
+    }
 
 });
 
 server.get("/schedule", async (ctx) => {
-    const is = isSetup();
-    if (is) {
-        await Cron();
-        return ctx.json({ "Schedule": "Loaded" }); 
-    } else {
-        return ctx.json({ "Schedule": "Not Setup", "Message": "/schedule/:second/:minute/:hour/:dom/:mon/:dow to setup" });
+    try {
+        const is = isSetup();
+        if (is) {
+            await Cron();
+            return ctx.json({ "Schedule": "Loaded" }); 
+        } else {
+            return ctx.json({ "Schedule": "Not Setup", "Message": "/schedule/:second/:minute/:hour/:dom/:mon/:dow to setup" });
+        }
+    } catch (e) {
+        console.log("error checking schedule");
+        return ctx.json({ "error": e });
     }
 
 });
