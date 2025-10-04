@@ -29,6 +29,14 @@ Just start the server, and it will handle how often you want to scrape, retentio
 
 ## Current Dependencies
 
+Currently only postgres and sqlite databases are available and may be the only options, postgres is used for over the network storage and sqlite is used for completely local storage of data.
+
+For postgres I use node-postgres linked below.
+
+For sqlite I use Node's built in sqlite module, while it is experimental it is relatively nice and is less packages to install as it comes shipped with all node versions required for this module.
+
+dotenv is used to load information stored in configuration files
+
 ### For Postgres Users
 
 - [node-postgres](https://www.npmjs.com/package/pg)
@@ -38,6 +46,29 @@ Just start the server, and it will handle how often you want to scrape, retentio
 
 - [dotenv](https://www.npmjs.com/package/dotenv)
 
+## Configuration File (.env)
+
+```yml
+# Home Assistant Information
+HA_TOKEN=<Bearer-Token>
+HA_HOST=<example.com>
+# Postgres Database Information
+DB_USER=user
+DB_PASSWORD=password
+DB_HOST=<example.com>
+DB_PORT=5432
+DB_DB=halogs
+# Runtime Info
+# Currently supports postgres or sqlite
+DB_TYPE=postgres
+```
+
 ## Current TODO
 
-Work on bulk insert of data, as on server the event loop will be hogged down when Scrape's happen
+- Add rentention length to .env and on startup of CLI and server Purge all logs older than set retention length
+- Refactor split logs to only returns non-empty or non-newline logs to stop handling it in function
+
+## Research
+
+- Websocket connection with homeassistant either with option to setup scrape on publish or to use only websocket connection
+- Automated testing
