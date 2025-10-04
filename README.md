@@ -70,5 +70,5 @@ DB_TYPE=postgres
 
 ## Research
 
-- Websocket connection with homeassistant either with option to setup scrape on publish or to use only websocket connection
-- Automated testing
+- Websocket connection with homeassistant either with option to setup scrape on publish or to use only websocket connection [WebSocket](https://nodejs.org/en/learn/getting-started/websocket)
+- Automated testing [mocha](https://mochajs.org/)
