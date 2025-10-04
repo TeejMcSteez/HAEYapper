@@ -40,26 +40,4 @@ Just start the server, and it will handle how often you want to scrape, retentio
 
 ## Current TODO
 
-Re-write database functionality to be more centralized. Only import what is need using 
-
-```javascript
-const map = {
-    postgres: () => import("../clients/pg.js"),
-    sqllite: () => import("./clients/sqlite.js")
-}
-
-function createDb() {
-    const key = process.env.DB_CLIENT ?? "sqlite";
-    const loader = map[key];
-    if (!loader) {
-        throw new Error("Unsupported DB_TYPE");
-    }
-    let mod;
-    try {
-        mod = await loader();
-    } catch (e) {
-        throw new Error("Failed to load adpater, have you installed the correct dependency?");
-    }
-    return mod.<createClient>();
-}
-```
+Work on bulk insert of data, as on server the event loop will be hogged down when Scrape's happen
