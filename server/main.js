@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 
-import Select from "../lib/database/Select.js";
-import Purge from "../lib/database/Purge.js";
+import SelectAdapter from "../lib/database/SelectAdapter.js";
+import PurgeAdapter from "../lib/database/PurgeAdapter.js";
 
 import { Cron, isSetup, SetupScrapeSchedule, DestroyCron } from "../lib/cron/Scraper.js";
 
@@ -13,15 +13,15 @@ const server = new Hono({
 
 
 server.get("/logs/get", async (ctx) => {
-    const logs = await Select();
+    const logs = await SelectAdapter();
 
     return ctx.json(logs);
 });
 // TODO: Add request parsing for security, ensuring that it matches a regex
-server.get("/logs/purge/:timespan/:interval", async (ctx) => {
+server.get("/logs/PurgeAdapter/:timespan/:interval", async (ctx) => {
     const { timespan, interval } = ctx.req.param();
 
-    await Purge(timespan, interval);
+    await PurgeAdapter(timespan, interval);
 
     return ctx.json({ "Timespan Removed": `${interval} ${timespan + "s"}` });
 });

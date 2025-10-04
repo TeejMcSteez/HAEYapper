@@ -2,10 +2,10 @@
 import readline from "node:readline";
 import { stdin, stdout } from "node:process";
 // Database interfaces
-import Display from "./lib/database/Display.js";
-import Scrape from "./lib/database/Scrape.js";
-import DropTable from "./lib/database/DropTable.js";
-import Purge from "./lib/database/Purge.js";
+import DisplayAdapter from "./lib/database/DisplayAdapter.js";
+import ScrapeAdapter from "./lib/database/ScrapeAdapter.js";
+import DropTableAdapter from "./lib/database/DropTableAdapter.js";
+import PurgeAdapter from "./lib/database/PurgeAdapter.js";
 import { Cron, SetupScrapeSchedule, isSetup } from "./lib/cron/Scraper.js";
 
 const rl = readline.createInterface({
@@ -25,20 +25,23 @@ function ask(question) {
  */
 async function main() {
     const choice = await ask(
-        "1) Scrape New Logs\n2) Reset Table\n3) Output Current Logs\n4) Purge Logs from Database\n5) Setup Scrape Schedule\nEnter anything else to exit\n> "
+        "1) ScrapeAdapter New Logs\n2) Reset Table\n3) Output Current Logs\n4) Purge Logs from Database\n5) Setup Scrape Schedule\nEnter anything else to exit\n> "
     );
 
     switch (choice.trim()) {
         case "1":
-            await Scrape();
+            await ScrapeAdapter();
             break;
         case "2":
-            await DropTable();
+            await DropTableAdapter();
             break;
         case "3":
             const ans = await ask("Output logs to file? (Y/N)\n> ");
-            const filename = await ask("Name of file (Leave blank for log)\n> ");
-            await Display(ans, filename);
+            let filename;
+            if (ans.toLowerCase() === 'y') {
+                filename = await ask("Name of file (Leave blank for log)\n> ");
+            }
+            await DisplayAdapter(ans, filename);
             break;
         case "4":
             const timespan = await ask("Choose to delete 'day'(s) or 'hour'(s)\n> ");
@@ -46,13 +49,13 @@ async function main() {
                 case "day":
                     const days = await ask("Choose number of days, logs older than this will be deleted\n> ");
          
-                    await Purge(timespan, days)
+                    await PurgeAdapter(timespan, days)
 
                     break;
                 case "hour":
                     const hours = await ask("Choose number of hours, logs older than this will be deleted\n> ");
          
-                    await Purge(timespan, hours);
+                    await PurgeAdapter(timespan, hours);
 
                     break;
                 default:
@@ -60,7 +63,7 @@ async function main() {
             }
             break;
         case "5":
-            console.log("Welcome to setting up scheduling a scrape cron job\n");
+            console.log("Welcome to setting up scheduling a Scrape cron job\n");
             if (isSetup()) {
                 const a = await ask("Would you like to use the saved schedule or over-write it? (Y/N)\n> ");
                 if (a.toLowerCase() === "y") {
