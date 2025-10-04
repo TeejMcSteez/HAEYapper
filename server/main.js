@@ -18,7 +18,7 @@ server.get("/logs/get", async (ctx) => {
     return ctx.json(logs);
 });
 // TODO: Add request parsing for security, ensuring that it matches a regex
-server.get("/logs/PurgeAdapter/:timespan/:interval", async (ctx) => {
+server.get("/logs/Purge/:timespan/:interval", async (ctx) => {
     const { timespan, interval } = ctx.req.param();
 
     await PurgeAdapter(timespan, interval);

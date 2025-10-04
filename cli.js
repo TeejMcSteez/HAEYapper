@@ -25,7 +25,7 @@ function ask(question) {
  */
 async function main() {
     const choice = await ask(
-        "1) ScrapeAdapter New Logs\n2) Reset Table\n3) Output Current Logs\n4) Purge Logs from Database\n5) Setup Scrape Schedule\nEnter anything else to exit\n> "
+        "1) Scrape New Logs\n2) Reset Table\n3) Output Current Logs\n4) Purge Logs from Database\n5) Setup Scrape Schedule\nEnter anything else to exit\n> "
     );
 
     switch (choice.trim()) {
