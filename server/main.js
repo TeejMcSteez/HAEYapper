@@ -41,7 +41,7 @@ server.get("/schedule", async (ctx) => {
         await Cron();
         return ctx.json({ "Schedule": "Loaded" }); 
     } else {
-        return ctx.json({ "Schedule": "Not Setup" });
+        return ctx.json({ "Schedule": "Not Setup", "Message": "/schedule/:second/:minute/:hour/:dom/:mon/:dow to setup" });
     }
 
 });
