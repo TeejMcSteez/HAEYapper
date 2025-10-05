@@ -1,15 +1,16 @@
+/**
+ * Test purge paramters validity
+ * @param {string} timespan 
+ * @param {string} interval 
+ * @returns boolean
+ * @throws Error
+ */
 function TestPurgeRegex(timespan, interval) {
-    const tsRegex = /^(?:day|hour)/;
-    const ivRegex = /^([0-9]?[0-9])/;
+    const tsValid = /^(?:day|hour)$/.test(timespan) && timespan.length <= 4;
+    const ivValid = /^[0-9]{1,2}$/.test(interval) &&  interval.length < 3;
 
-    const tsValid = tsRegex.test(timespan);
-    const ivValid = ivRegex.test(interval);
-
-    if (!tsValid) {
-        throw new Error("[Regex] Timespan invalid");
-    } else if (!ivValid) {
-        throw new Error("[Regex] Interval invalid");
-    }
+    if (!tsValid) throw new Error("[Regex] Timespan is invalid");
+    if (!ivValid) throw new Error("[Regex] Interval is invalid");
 
     return tsValid && ivValid;
 }
