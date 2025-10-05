@@ -71,9 +71,8 @@ PRUNE_SPAN="3 day" # Deletes logs older than given timespan, can be day/hour.
 
 ## Current TODO
 
-- Refactor split logs to only returns non-empty or non-newline logs to stop handling it in function
+- Websocket connection with homeassistant either with option to setup scrape on publish or to use only websocket connection [Node Websocket](https://nodejs.org/en/learn/getting-started/websocket), [HAWebsocket Docs](https://developers.home-assistant.io/docs/api/websocket/)
 
 ## Research
 
-- Websocket connection with homeassistant either with option to setup scrape on publish or to use only websocket connection [WebSocket](https://nodejs.org/en/learn/getting-started/websocket)
 - Automated testing [mocha](https://mochajs.org/)
