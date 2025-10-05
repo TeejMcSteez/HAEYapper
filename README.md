@@ -66,13 +66,11 @@ DB_DB=halogs
 # Runtime Info
 # Currently supports postgres or sqlite
 DB_TYPE=postgres
-PRUNE_SPAN="3 day" # Deletes logs older than given timespan, can be day/hour.
+PRUNE="3 day" # Deletes logs older than given timespan, can be day/hour.
 ```
 
 ## Current TODO
 
 - Websocket connection with homeassistant either with option to setup scrape on publish or to use only websocket connection [Node Websocket](https://nodejs.org/en/learn/getting-started/websocket), [HAWebsocket Docs](https://developers.home-assistant.io/docs/api/websocket/)
 
-## Research
-
-- Automated testing [mocha](https://mochajs.org/)
+- Further Mocha test's to verify functionality
