@@ -4,6 +4,7 @@ import { serve } from "@hono/node-server";
 import SelectAdapter from "../lib/database/SelectAdapter.js";
 import PurgeAdapter from "../lib/database/PurgeAdapter.js";
 import ScrapeAdapter from "../lib/database/ScrapeAdapter.js";
+import Prune from "../lib/database/Prune.js";
 
 import { Cron, isSetup, SetupScrapeSchedule, DestroyCron } from "../lib/cron/Scraper.js";
 
@@ -86,6 +87,9 @@ server.get("/schedule/destroy", async (ctx) => {
         return ctx.json({ "error": e });
     }
 });
+
+console.log("Pruning logs before startup\n");
+await Prune();
 
 console.log("Server starting at http://localhost:3000/");
 serve(server);

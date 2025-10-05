@@ -6,6 +6,7 @@ import DisplayAdapter from "./lib/database/DisplayAdapter.js";
 import ScrapeAdapter from "./lib/database/ScrapeAdapter.js";
 import DropTableAdapter from "./lib/database/DropTableAdapter.js";
 import PurgeAdapter from "./lib/database/PurgeAdapter.js";
+import Prune from "./lib/database/Prune.js";
 import { Cron, SetupScrapeSchedule, isSetup } from "./lib/cron/Scraper.js";
 
 const rl = readline.createInterface({
@@ -24,6 +25,9 @@ function ask(question) {
  * Entrypoint
  */
 async function main() {
+    // If their is a prune schedule setup will run it here
+    await Prune();
+    
     const choice = await ask(
         "1) Scrape New Logs\n2) Reset Table\n3) Output Current Logs\n4) Purge Logs from Database\n5) Setup Scrape Schedule\nEnter anything else to exit\n> "
     );
