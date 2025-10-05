@@ -19,7 +19,7 @@ server.get("/logs/get", async (ctx) => {
         const logs = await SelectAdapter();
         return ctx.json(logs);
     } catch (e) {
-        console.log("error getting logs: " + e);
+        console.log("[Server] error getting logs: " + e);
         return ctx.json({ "error": e });
     }
 });
@@ -32,19 +32,19 @@ server.get("/logs/Purge/:timespan/:interval", async (ctx) => {
 
         return ctx.json({ "Timespan Removed": `${interval} ${timespan + "s"}` });
     } catch (e) {
-        console.log("error purging logs " + e);
+        console.log("[Server] error purging logs " + e);
         return ctx.json({ "error": e });
     }
 });
 
 server.get("/logs/scrape", async (ctx) => {
-    console.log("Scrape job started\n");
+    console.log("[Server] Scrape job started\n");
     try {
         await ScrapeAdapter();
-        console.log("Scrape job complete\n")
+        console.log("[Server] Scrape job complete\n")
         return ctx.json({ "Scrape Job": "Completed" });
     } catch (e) {
-        console.log("Scrape job failed with error " + e);
+        console.log("[Server] Scrape job failed with error " + e);
         return ctx.json({ "error": e });
     }
 });
@@ -57,7 +57,7 @@ server.get("/schedule/:second/:minute/:hour/:dom/:mon/:dow", async (ctx) =>  {
 
         return ctx.json({ "Success": res });
     } catch (e) {
-        console.log("error scheduling scrape job: " + e);
+        console.log("[Server] error scheduling scrape job: " + e);
         return ctx.json({ "error": e }); 
     }
 
@@ -73,7 +73,7 @@ server.get("/schedule", async (ctx) => {
             return ctx.json({ "Schedule": "Not Setup", "Message": "/schedule/:second/:minute/:hour/:dom/:mon/:dow to setup" });
         }
     } catch (e) {
-        console.log("error checking schedule");
+        console.log("[Server] error checking schedule");
         return ctx.json({ "error": e });
     }
 
@@ -88,8 +88,8 @@ server.get("/schedule/destroy", async (ctx) => {
     }
 });
 
-console.log("Pruning logs before startup\n");
+console.log("[Server] Pruning logs before startup\n");
 await Prune();
 
-console.log("Server starting at http://localhost:3000/");
+console.log("[Server] Server starting at http://localhost:3000/");
 serve(server);
