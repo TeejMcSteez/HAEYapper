@@ -28,9 +28,17 @@ server.get("/logs/Purge/:timespan/:interval", async (ctx) => {
     try {
         const { timespan, interval } = ctx.req.param();
 
-        await PurgeAdapter(timespan, interval);
+        const tsRegex = /^(?:day|hour)/
+        const ivRegex = /^\d{1,3}/
 
-        return ctx.json({ "Timespan Removed": `${interval} ${timespan + "s"}` });
+        if (!tsRegex.test(timespan) || !ivRegex.test(interval)) {
+            throw new Error("Invalid input");
+        } else {
+            await PurgeAdapter(timespan, interval);
+
+            return ctx.json({ "Timespan Removed": `${interval} ${timespan + "s"}` });
+        }
+
     } catch (e) {
         console.log("[Server] error purging logs " + e);
         return ctx.json({ "error": e });
