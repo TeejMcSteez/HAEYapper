@@ -66,6 +66,7 @@ DB_DB=halogs
 # Runtime Info
 # Currently supports postgres or sqlite
 DB_TYPE=postgres
+PRUNE_SPAN="3 day" # Deletes logs older than given timespan, can be day/hour.
 ```
 
 ## Current TODO
