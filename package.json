@@ -9,7 +9,8 @@
   },
   "scripts": {
     "cli": "node cli.js",
-    "serve": "pnpm node server/main.js"
+    "serve": "pnpm node server/main.js",
+    "test": "npx mocha"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +23,7 @@
     "node-cron": "^4.2.1"
   },
   "optionalDependencies": {
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "mocha": "^11.7.4"
   }
 }
