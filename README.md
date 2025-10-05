@@ -71,7 +71,6 @@ PRUNE_SPAN="3 day" # Deletes logs older than given timespan, can be day/hour.
 
 ## Current TODO
 
-- Add rentention length to .env and on startup of CLI and server Purge all logs older than set retention length
 - Refactor split logs to only returns non-empty or non-newline logs to stop handling it in function
 
 ## Research
