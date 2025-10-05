@@ -37,14 +37,19 @@ For sqlite I use Node's built in sqlite module, while it is experimental it is r
 
 dotenv is used to load information stored in configuration files
 
+For the web server I use Hono as it is light, simple, and claims multi-runtime
+
+To schedule scrape job I use node-cron for a clean api and cleanup
+
+[node-cron](https://www.npmjs.com/package/node-cron)
+
+[Hono](https://hono.dev/)
+
+[dotenv](https://www.npmjs.com/package/dotenv)
+
 ### For Postgres Users
 
 - [node-postgres](https://www.npmjs.com/package/pg)
-- [dotenv](https://www.npmjs.com/package/dotenv)
-
-### For Sqllite Users
-
-- [dotenv](https://www.npmjs.com/package/dotenv)
 
 ## Configuration File (.env)
 
