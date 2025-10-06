@@ -74,8 +74,7 @@ PRUNE="3 day" # Deletes logs older than given timespan, can be day/hour.
 ## Current TODO
 
 - Further Mocha test's to verify functionality.
-- KISS, Scrape does to much split functionality into more components for easier testing. (remove error handling as splitLogs handles newlines and blank strings now)
-- Create main event loop, for pnpm run after setup with CLI to just run non-stop.
+- Have a better event loop rather than `while(true) { func() };` 
 
 ## Research
 
