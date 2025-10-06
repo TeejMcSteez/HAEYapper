@@ -9,21 +9,22 @@
   },
   "scripts": {
     "cli": "node cli.js",
-    "serve": "pnpm node server/main.js",
+    "serve": "node server/main.js",
+    "run": "node runner.js",
     "test": "npx mocha"
   },
   "keywords": [],
-  "author": "",
+  "author": "https://teejmcsteez.tech",
   "license": "Apache-2.0",
   "packageManager": "pnpm@10.17.1",
   "dependencies": {
-    "@hono/node-server": "^1.19.5",
     "dotenv": "^17.2.2",
     "hono": "^4.9.9",
     "node-cron": "^4.2.1"
   },
   "optionalDependencies": {
     "pg": "^8.16.3",
+    "@hono/node-server": "^1.19.5",
     "mocha": "^11.7.4"
   }
 }
