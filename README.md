@@ -2,25 +2,25 @@
 
 I want a basic script that can run on a cron service or in terminal non-stop to get Home Assistant error logs and store them in a postgres database.
 
-This is for personal use but also for anyone that want's a lightweight logger specifically for Home Assistant that uses postgres (my favorite SQL flavor)
+This is for personal use but also for anyone that want's a lightweight logger specifically for Home Assistant that runs on Node apart from Home Assistant as it only touches the REST endpoint to fetch logs.
 
 ## Roadmap
 
 ### V1
 
-Currently I have basic fetching (scrape.js), console display (display.js), reset the table (reset.js), initialize the table in the database (init.db), and finally a usable client for all other components (client.js)
+#### CLI
 
-For the main program I want to . . . 
+Allows user to setup schedule jobs, scrape and upload to database, setup rentention policy, purge logs, or reset the table.
 
-1. Query the database to fetch past logs for filtering
-2. Take the logs from the REST endpoint and compare them against the database only keeping the new ones (ones that don't match old logs)
-3. After I have all my filtered logs, insert them into the postgres table with a timestamp on database for each insert to signify date time of scrape
-4. After query is finished ask the user if they would like to see the logs, if so it will write the log information to a file on desktop otherwise -> step 5.
-5. Do proper cleanup and then exit the program
+#### Server
 
-#### Add Ons
+- /logs/get - Gets all logs in table and returns as JSON.
+- /logs/purge/:timespan/:interval - Purges logs within a given timespan and interval.
+- /logs/scrape - Get's logs from REST endpoint, split logs, and uploads to database.
+- /schedule/:second/:minute/:hour/:dom/:mon/:dow - Schedules a scrape job in the future.
+- /schedule - Loads the schedule from schedule.json.
+- /schedule/destroy - Kills all's current jobs and destroys their schedule in memory.
 
-- Ability to set a retention length in .env or another method so that it will automatically clean up your database. Ensuring the disk's don't balloon.
 
 ## V2 (If I'm feeling spicy)
 
@@ -47,6 +47,8 @@ To schedule scrape job I use node-cron for a clean api and cleanup
 
 [dotenv](https://www.npmjs.com/package/dotenv)
 
+[Mocha](https://mochajs.org/) -  Testing library
+
 ### For Postgres Users
 
 - [node-postgres](https://www.npmjs.com/package/pg)
@@ -71,6 +73,13 @@ PRUNE="3 day" # Deletes logs older than given timespan, can be day/hour.
 
 ## Current TODO
 
+- Further Mocha test's to verify functionality.
+- KISS, Scrape does to much split functionality into more components for easier testing. (remove error handling as splitLogs handles newlines and blank strings now)
+
+## Research
+
 - Websocket connection with homeassistant either with option to setup scrape on publish or to use only websocket connection [Node Websocket](https://nodejs.org/en/learn/getting-started/websocket), [HAWebsocket Docs](https://developers.home-assistant.io/docs/api/websocket/)
 
-- Further Mocha test's to verify functionality
+## Notes
+
+Home Assistant websocket API did not directly expose an endpoint for error logs, while I might have mis-read I do not think it allows subscriptions to system logs without a user setting it up so for now I will prob. bench websocket connection to HA as it will require a third party library and requires user setup on HA which is more work than install and run.
