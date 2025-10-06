@@ -10,7 +10,7 @@
   "scripts": {
     "cli": "node cli.js",
     "serve": "node server/main.js",
-    "run": "node runner.js",
+    "runner": "node runner.js",
     "test": "npx mocha"
   },
   "keywords": [],
