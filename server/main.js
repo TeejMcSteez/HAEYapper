@@ -81,7 +81,7 @@ server.get("/schedule", async (ctx) => {
             return ctx.json({ "Schedule": "Not Setup", "Message": "/schedule/:second/:minute/:hour/:dom/:mon/:dow to setup" });
         }
     } catch (e) {
-        console.log("[Server] error checking schedule");
+        console.log("[Server] error checking schedule" + e);
         return ctx.json({ "error": e });
     }
 
