@@ -8,7 +8,7 @@ import Prune from "../lib/database/Prune.js";
 
 import { Cron, isSetup, SetupScrapeSchedule, DestroyCron } from "../lib/cron/Scraper.js";
 
-import PurgeRegex from "./lib/testRegex.js";
+import { TestPurgeRegex } from "./lib/testRegex.js";
 
 const server = new Hono({
     port: 3000,
@@ -29,7 +29,7 @@ server.get("/logs/purge/:timespan/:interval", async (ctx) => {
     try {
         const { timespan, interval } = ctx.req.param();
 
-        const valid = PurgeRegex(timespan, interval);
+        const valid = TestPurgeRegex(timespan, interval);
 
         if (!valid) {
             throw new Error("Invalid input");
