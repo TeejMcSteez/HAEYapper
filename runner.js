@@ -1,13 +1,10 @@
-/**
- * Main event loop will
- * 1. If prune is setup Prune database
- * 2. Load cron schedule if available
- * 3. Sit and listen for error or interrupt 
- */
 import Prune from "./lib/database/Prune.js";
 import { Cron, GetActive } from "./lib/cron/Scraper.js";
 import "dotenv/config";
-
+/**
+ * Setup for main, Prune's old log's then loads cron schedule
+ * will output currently active task. 
+ */
 async function setup() {
     try {
         await Prune();
@@ -22,7 +19,10 @@ async function setup() {
     }
     
 }
-
+/**
+ * Simply sits on event loop closing on anonymous promise 
+ * and listening for interrupt or termination signals.
+ */
 async function main() {
 
     process.on("SIGINT", async () => {
