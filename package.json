@@ -8,9 +8,9 @@
     "node": ">=22.5.0"
   },
   "scripts": {
-    "cli": "node cli.js",
+    "cli": "node src/cli.js",
     "serve": "node server/main.js",
-    "runner": "node runner.js",
+    "runner": "node src/runner.js",
     "test": "npx mocha"
   },
   "keywords": [],
