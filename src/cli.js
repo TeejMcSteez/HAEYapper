@@ -2,12 +2,12 @@
 import readline from "node:readline";
 import { stdin, stdout } from "node:process";
 // Database interfaces
-import DisplayAdapter from "./lib/database/DisplayAdapter.js";
-import ScrapeAdapter from "./lib/database/ScrapeAdapter.js";
-import DropTableAdapter from "./lib/database/DropTableAdapter.js";
-import PurgeAdapter from "./lib/database/PurgeAdapter.js";
-import Prune from "./lib/database/Prune.js";
-import { Cron, SetupScrapeSchedule, isSetup } from "./lib/cron/Scraper.js";
+import DisplayAdapter from "../lib/database/DisplayAdapter.js";
+import ScrapeAdapter from "../lib/database/ScrapeAdapter.js";
+import DropTableAdapter from "../lib/database/DropTableAdapter.js";
+import PurgeAdapter from "../lib/database/PurgeAdapter.js";
+import Prune from "../lib/database/Prune.js";
+import { Cron, SetupScrapeSchedule, isSetup } from "../lib/cron/Scraper.js";
 
 const rl = readline.createInterface({
     input: stdin,

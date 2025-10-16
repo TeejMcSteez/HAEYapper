@@ -1,5 +1,5 @@
-import Prune from "./lib/database/Prune.js";
-import { Cron, GetActive } from "./lib/cron/Scraper.js";
+import Prune from "../lib/database/Prune.js";
+import { Cron, GetActive } from "../lib/cron/Scraper.js";
 import "dotenv/config";
 /**
  * Setup for main, Prune's old log's then loads cron schedule
