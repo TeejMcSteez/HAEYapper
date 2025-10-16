@@ -24,25 +24,24 @@ async function setup() {
  * and listening for interrupt or termination signals.
  */
 async function main() {
-
-    process.on("SIGINT", async () => {
-        console.log(`[runner] Interrupt received closing`);
-    });
-
-    process.on("SIGTERM", async () => {
-        console.log(`[runner] Termination received closing`);
-    });
-    
     // Awaits forevever
-    await new Promise(() => {});
+    await new Promise(() => {
+        // Process interrupt
+        process.on("SIGINT", async () => {
+            console.log(`[runner] Interrupt received closing`);
+        });
+        // Process termination
+        process.on("SIGTERM", async () => {
+            console.log(`[runner] Termination received closing`);
+        });
+    });
 }  
 
-await setup().catch((e) => {
-    console.log(`[runner] Uncaught error in setup: ${e}`);
-    process.exit(1);
-});
-
-await main().catch((e) => {
-    console.log(`[runner] Uncaught error in main: ${e}`);
-    process.exit(1);
-});
+try {
+    console.log("[runner] Pruning logs and activating cron job . . .");
+    await setup();
+    console.log("[runner] Done\nStarting main loop . . .\n");
+    await main();
+} catch (e) {
+    console.error("[runner] ", e);
+}
