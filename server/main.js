@@ -6,7 +6,7 @@ import PurgeAdapter from "../lib/database/PurgeAdapter.js";
 import ScrapeAdapter from "../lib/database/ScrapeAdapter.js";
 import Prune from "../lib/database/Prune.js";
 
-import { Cron, isSetup, SetupScrapeSchedule, DestroyCron } from "../lib/cron/Scraper.js";
+import { Cron, isSetup, SetupScrapeSchedule } from "../lib/cron/Scraper.js";
 
 import { TestPurgeRegex } from "./lib/testRegex.js";
 
@@ -85,15 +85,6 @@ server.get("/schedule", async (ctx) => {
         return ctx.json({ "error": e });
     }
 
-});
-
-server.get("/schedule/destroy", async (ctx) => {
-    try {
-        await DestroyCron();
-        return ctx.json({ "destroy": "successful" });
-    } catch (e) {
-        return ctx.json({ "error": e });
-    }
 });
 
 console.log("[Server] Pruning logs before startup\n");
