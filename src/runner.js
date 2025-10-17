@@ -1,6 +1,9 @@
 import Prune from "../lib/database/Prune.js";
 import { Cron, GetActive } from "../lib/cron/Scraper.js";
+import { Logger, LOGGER_TYPES } from "../lib/logger.js";
 import "dotenv/config";
+
+const logger = new Logger(LOGGER_TYPES.runner);
 /**
  * Setup for main, Prune's old log's then loads cron schedule
  * will output currently active task. 
@@ -12,10 +15,10 @@ async function setup() {
 
         const currentlyActive = await GetActive();
         currentlyActive.forEach(key => {
-            console.log(`[runner] Active task: ${key.name}`);
+            logger.outputLog(`Active task: ${key.name}`);
         });
     } catch (e) {
-        console.log(`[runner] Setup failed with error: ${e}`);
+        logger.outputLog(`Setup failed with error: ${e}`);
     }
     
 }
@@ -28,20 +31,20 @@ async function main() {
     await new Promise(() => {
         // Process interrupt
         process.on("SIGINT", async () => {
-            console.log(`[runner] Interrupt received closing`);
+            logger.outputLog(`Interrupt received closing`);
         });
         // Process termination
         process.on("SIGTERM", async () => {
-            console.log(`[runner] Termination received closing`);
+            logger.outputLog(`Termination received closing`);
         });
     });
 }  
 
 try {
-    console.log("[runner] Pruning logs and activating cron job . . .");
+    logger.outputLog("Pruning logs and activating cron job . . .");
     await setup();
-    console.log("[runner] Done\nStarting main loop . . .\n");
+    logger.outputLog("Done\nStarting main loop . . .\n");
     await main();
 } catch (e) {
-    console.error("[runner] ", e);
+    logger.outputError(e);
 }
