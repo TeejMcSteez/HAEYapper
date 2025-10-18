@@ -21,7 +21,6 @@ Auxillary Commands:
 - /logs/scrape - Get's logs from REST endpoint, split logs, and uploads to database.
 - /schedule/:second/:minute/:hour/:dom/:mon/:dow - Schedules a scrape job in the future.
 - /schedule - Loads the schedule from schedule.json.
-- /schedule/destroy - Kills all's current jobs and destroys their schedule in memory.
 
 ## Current Dependencies
 
