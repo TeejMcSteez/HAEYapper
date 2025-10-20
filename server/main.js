@@ -16,6 +16,7 @@ const server = new Hono({
 
 
 server.get("/logs/get", async (ctx) => {
+    ctx.header("Access-Control-Allow-Origin", "*");
     try {
         const logs = await SelectAdapter();
         return ctx.json(logs);
@@ -26,6 +27,7 @@ server.get("/logs/get", async (ctx) => {
 });
 // TODO: Add request parsing for security, ensuring that it matches a regex
 server.get("/logs/purge/:timespan/:interval", async (ctx) => {
+    ctx.header("Access-Control-Allow-Origin", "*");
     try {
         const { timespan, interval } = ctx.req.param();
 
@@ -47,6 +49,7 @@ server.get("/logs/purge/:timespan/:interval", async (ctx) => {
 
 server.get("/logs/scrape", async (ctx) => {
     console.log("[Server] Scrape job started\n");
+    ctx.header("Access-Control-Allow-Origin", "*");
     try {
         await ScrapeAdapter();
         console.log("[Server] Scrape job complete\n")
@@ -58,6 +61,7 @@ server.get("/logs/scrape", async (ctx) => {
 });
 // TODO: Add request parsing for security, ensuring that it matches a regex
 server.get("/schedule/:second/:minute/:hour/:dom/:mon/:dow", async (ctx) =>  {
+    ctx.header("Access-Control-Allow-Origin", "*");
     try {
         const { second, minute, hour, dom, mon, dow } = ctx.req.param();
 
@@ -72,6 +76,7 @@ server.get("/schedule/:second/:minute/:hour/:dom/:mon/:dow", async (ctx) =>  {
 });
 
 server.get("/schedule", async (ctx) => {
+    ctx.header("Access-Control-Allow-Origin", "*");
     try {
         const is = isSetup();
         if (is) {
